@@ -45,23 +45,21 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="  space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dashboard
-          </h1>
-        </div>
-
-        {isLoading ? (
-          <Spinner className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-        ) : (
-          <div className="bg-white p-6 rounded-xl border shadow-sm flex w-full">
-            <DataGrid data={data} columns={columns} className="w-3/4" />
-            <Timeline />
-          </div>
-        )}
+    <div className="bg-gray-50 h-screen p-8 space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          Dashboard
+        </h1>
       </div>
+
+      {isLoading ? (
+        <Spinner className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      ) : (
+        <div className="bg-white p-6 rounded-xl border shadow-sm flex min-h-205 gap-4">
+          <DataGrid data={data} columns={columns} className="w-3/4" />
+          <Timeline />
+        </div>
+      )}
     </div>
   );
 }

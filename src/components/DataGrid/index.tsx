@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ColumnFilter } from "./ColumnFilter";
 
 export interface ColumnDef<T> {
   accessor: keyof T;
@@ -42,6 +43,9 @@ export const DataGrid = <T extends { id: string | number }>({
 
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [page, setPage] = useState(1);
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(
+    columns.map((c) => c.accessor as string)
+  );
 
   const visibleData = useMemo(() => {
     let result = [...data];
@@ -91,40 +95,49 @@ export const DataGrid = <T extends { id: string | number }>({
   );
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-4 flex flex-col", className)}>
+      <div className="flex justify-end">
+        <ColumnFilter
+          allColumns={columns.map((c) => c.accessor as string)}
+          visibleColumns={visibleColumns}
+          setVisibleColumns={setVisibleColumns}
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              {columns.map((col) => (
-                <TableHead key={String(col.accessor)}>
-                  <div className="space-y-2 py-2">
-                    <button
-                      onClick={() => handleSort(col.accessor)}
-                      className="font-bold hover:text-blue-600 transition duration-300 flex items-center gap-1"
-                    >
-                      {col.header}
-                      {sortConfig.key === col.accessor && (
-                        <span>
-                          {sortConfig.direction === "asc" ? (
-                            <ArrowUp size={16} />
-                          ) : (
-                            <ArrowDown size={16} />
-                          )}
-                        </span>
-                      )}
-                    </button>
+              {columns
+                .filter((c) => visibleColumns.includes(c.accessor as string))
+                .map((c) => (
+                  <TableHead key={String(c.accessor)}>
+                    <div className="space-y-2 py-2">
+                      <button
+                        onClick={() => handleSort(c.accessor)}
+                        className="font-bold hover:text-blue-600 transition duration-300 flex items-center gap-1"
+                      >
+                        {c.header}
+                        {sortConfig.key === c.accessor && (
+                          <span>
+                            {sortConfig.direction === "asc" ? (
+                              <ArrowUp size={16} />
+                            ) : (
+                              <ArrowDown size={16} />
+                            )}
+                          </span>
+                        )}
+                      </button>
 
-                    <Input
-                      placeholder={`Filter ${col.header}...`}
-                      className="h-8 text-xs"
-                      onChange={(e) =>
-                        handleFilter(col.accessor, e.target.value)
-                      }
-                    />
-                  </div>
-                </TableHead>
-              ))}
+                      <Input
+                        placeholder={`Filter ${c.header}...`}
+                        className="h-8 text-xs"
+                        onChange={(e) =>
+                          handleFilter(c.accessor, e.target.value)
+                        }
+                      />
+                    </div>
+                  </TableHead>
+                ))}
             </TableRow>
           </TableHeader>
 
@@ -141,11 +154,15 @@ export const DataGrid = <T extends { id: string | number }>({
             ) : (
               selectedData.map((row) => (
                 <TableRow key={row.id}>
-                  {columns.map((col) => (
-                    <TableCell key={`${row.id}-${String(col.accessor)}`}>
-                      {col.render ? col.render(row) : String(row[col.accessor])}
-                    </TableCell>
-                  ))}
+                  {columns
+                    .filter((c) =>
+                      visibleColumns.includes(c.accessor as string)
+                    )
+                    .map((c) => (
+                      <TableCell key={`${row.id}-${String(c.accessor)}`}>
+                        {c.render ? c.render(row) : String(row[c.accessor])}
+                      </TableCell>
+                    ))}
                 </TableRow>
               ))
             )}
@@ -153,7 +170,7 @@ export const DataGrid = <T extends { id: string | number }>({
         </Table>
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-auto">
         <div className="text-sm text-gray-500">
           Page {page} of {nPages}
         </div>

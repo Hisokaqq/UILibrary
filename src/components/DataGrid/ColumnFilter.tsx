@@ -1,53 +1,55 @@
-"use client";
-
-import * as React from "react";
-import { type DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Settings2 } from "lucide-react";
 
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+interface ColumnFilterProps {
+  allColumns: string[];
+  visibleColumns: string[];
+  setVisibleColumns: (columns: string[]) => void;
+}
 
-export function ColumnFilter() {
-  const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
-  const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
-  const [showPanel, setShowPanel] = React.useState<Checked>(false);
+export const ColumnFilter = ({
+  allColumns,
+  visibleColumns,
+  setVisibleColumns,
+}: ColumnFilterProps) => {
+  const handleCheckedChange = (column: string, isChecked: boolean) => {
+    if (isChecked) {
+      setVisibleColumns([...visibleColumns, column]);
+    } else {
+      setVisibleColumns(visibleColumns.filter((c) => c !== column));
+    }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant="outline" size="sm" className="ml-auto h-8 flex">
+          <Settings2 className="mr-2 h-4 w-4" />
+          View Columns
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem
-          checked={showStatusBar}
-          onCheckedChange={setShowStatusBar}
-        >
-          Status Bar
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={showActivityBar}
-          onCheckedChange={setShowActivityBar}
-          disabled
-        >
-          Activity Bar
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={showPanel}
-          onCheckedChange={setShowPanel}
-        >
-          Panel
-        </DropdownMenuCheckboxItem>
+
+      <DropdownMenuContent>
+        {allColumns.map((c) => {
+          const isChecked = visibleColumns.includes(c);
+
+          return (
+            <DropdownMenuCheckboxItem
+              key={c}
+              checked={isChecked}
+              onCheckedChange={(checked) => handleCheckedChange(c, checked)}
+            >
+              {c}
+            </DropdownMenuCheckboxItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
