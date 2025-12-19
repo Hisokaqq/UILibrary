@@ -8,10 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColumnFilter } from "./ColumnFilter";
+import { Pagination } from "./Pagination";
 
 export interface ColumnDef<T> {
   accessor: keyof T;
@@ -170,29 +170,7 @@ export const DataGrid = <T extends { id: string | number }>({
         </Table>
       </div>
 
-      <div className="flex justify-between items-center mt-auto">
-        <div className="text-sm text-gray-500">
-          Page {page} of {nPages}
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage((p) => p - 1)}
-            disabled={page === 1}
-          >
-            Prev
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage((p) => p + 1)}
-            disabled={page === nPages}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <Pagination page={page} nPages={nPages} setPage={setPage} />
     </div>
   );
 };

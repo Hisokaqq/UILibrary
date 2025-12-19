@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Data } from "@/lib/mockData";
 import { Spinner } from "./components/ui/spinner";
 import Timeline from "./components/Timeline";
+import { Nav } from "./components/Nav";
 
 function App() {
   const { data, isLoading } = useData();
@@ -46,12 +47,7 @@ function App() {
 
   return (
     <div className="bg-gray-50 h-screen p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Dashboard
-        </h1>
-      </div>
-
+      <Nav />
       {isLoading ? (
         <Spinner className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
       ) : (
