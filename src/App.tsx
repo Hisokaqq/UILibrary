@@ -1,5 +1,11 @@
+import DataGrid from "./components/DataGrid";
+
 function App() {
-  return <div className="h-screen w-screen bg-red-300"></div>;
+  return (
+    <div>
+      <DataGrid />
+    </div>
+  );
 }
 
 export default App;
