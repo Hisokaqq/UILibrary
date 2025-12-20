@@ -1,5 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
+import { ButtonGroup } from "../ui/button-group";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
   page: number;
@@ -13,24 +15,24 @@ export const Pagination = ({ page, nPages, setPage }: PaginationProps) => {
       <div className="text-sm text-gray-500">
         Page {page} of {nPages}
       </div>
-      <div className="space-x-2">
+      <ButtonGroup>
         <Button
           variant="outline"
-          size="sm"
+          size="icon"
           onClick={() => setPage(page - 1)}
           disabled={page === 1}
         >
-          Prev
+          <ChevronLeft />
         </Button>
         <Button
           variant="outline"
-          size="sm"
+          size="icon"
           onClick={() => setPage(page + 1)}
           disabled={page === nPages}
         >
-          Next
+          <ChevronRight />
         </Button>
-      </div>
+      </ButtonGroup>
     </div>
   );
 };
