@@ -53,7 +53,13 @@ function App() {
       ) : (
         <div className="bg-white p-6 rounded-xl border shadow-sm flex min-h-205 gap-4">
           <DataGrid data={data} columns={columns} className="w-3/4" />
-          <Timeline />
+          <Timeline
+            groupBy="date"
+            header="Date"
+            data={data}
+            className="w-1/4 max-h-195"
+            render={(item: Data) => <div>{item.title}</div>}
+          />
         </div>
       )}
     </div>
