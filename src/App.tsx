@@ -6,6 +6,7 @@ import type { Data } from "@/lib/mockData";
 import { Spinner } from "./components/ui/spinner";
 import Timeline from "./components/Timeline";
 import { Nav } from "./components/Nav";
+import { CheckCircle2, CircleDashed, Timer } from "lucide-react";
 
 function App() {
   const { data, isLoading } = useData();
@@ -58,7 +59,45 @@ function App() {
             header="Date"
             data={data}
             className="w-1/4 max-h-195"
-            render={(item: Data) => <div>{item.title}</div>}
+            render={(item: Data) => {
+              const statusConfig = {
+                pending: {
+                  icon: CircleDashed,
+                  color: "text-yellow-600 bg-yellow-50 border-yellow-200",
+                },
+                "in-progress": {
+                  icon: Timer,
+                  color: "text-blue-600 bg-blue-50 border-blue-200",
+                },
+                completed: {
+                  icon: CheckCircle2,
+                  color: "text-green-600 bg-green-50 border-green-200",
+                },
+              };
+
+              const config = statusConfig[item.status];
+              const Icon = config.icon;
+
+              return (
+                <div className="flex gap-3 p-2 items-center rounded-sm bg-muted/30">
+                  <div
+                    className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border ${config.color}`}
+                  >
+                    <Icon size={16} strokeWidth={2.5} />
+                  </div>
+
+                  <div className="flex-1  gap-5 flex justify-between">
+                    <p className="font-semibold text-primary leading-none">
+                      {item.title}
+                    </p>
+
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                      {item.id}
+                    </p>
+                  </div>
+                </div>
+              );
+            }}
           />
         </div>
       )}

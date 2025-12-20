@@ -44,7 +44,7 @@ const Timeline = <T extends { id: string | number }>({
               <span className="font-bold">{items.length}</span>items
             </Badge>
           </div>
-          <div className="flex flex-col gap-2 p-4">
+          <div className="flex flex-col gap-2 p-2">
             {items.map((item) => render(item))}
           </div>
         </div>
