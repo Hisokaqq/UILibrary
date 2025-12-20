@@ -7,6 +7,7 @@ import { Spinner } from "./components/ui/spinner";
 import Timeline from "./components/Timeline";
 import { Nav } from "./components/Nav";
 import { CheckCircle2, CircleDashed, Timer } from "lucide-react";
+import { cn } from "./lib/utils";
 
 function App() {
   const { data, isLoading } = useData();
@@ -59,7 +60,7 @@ function App() {
             header="Date"
             data={data}
             className="w-1/4 max-h-195"
-            render={(item: Data) => {
+            render={(item: Data, isSelected: boolean) => {
               const statusConfig = {
                 pending: {
                   icon: CircleDashed,
@@ -79,7 +80,12 @@ function App() {
               const Icon = config.icon;
 
               return (
-                <div className="flex gap-3 p-2 items-center rounded-sm bg-muted/30">
+                <div
+                  className={cn(
+                    "flex gap-3 p-2 items-center rounded-sm transition-all duration-200",
+                    isSelected ? "bg-blue-100 border-blue-200" : "bg-muted/10"
+                  )}
+                >
                   <div
                     className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border ${config.color}`}
                   >
