@@ -32,6 +32,7 @@ const Timeline = <T extends { id: string | number }>({
   const [selectedItem, setSelectedItem] = useState(0);
 
   const itemsRef = useRef<Record<string, HTMLDivElement | null>>({});
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -74,6 +75,24 @@ const Timeline = <T extends { id: string | number }>({
   }, [groupedData, selectedGroup, selectedItem]);
 
   useEffect(() => {
+    const groups = Object.entries(groupedData);
+    if (groups.length === 0) return;
+
+    const lastGroupIdx = groups.length - 1;
+    const lastItemIdx = groups[lastGroupIdx][1].length - 1;
+
+    if (selectedGroup === 0 && selectedItem === 0) {
+      containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (selectedGroup === lastGroupIdx && selectedItem === lastItemIdx) {
+      containerRef.current?.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+      return;
+    }
     const key = `${selectedGroup}-${selectedItem}`;
     const element = itemsRef.current[key];
 
@@ -83,10 +102,13 @@ const Timeline = <T extends { id: string | number }>({
         block: "nearest",
       });
     }
-  }, [selectedGroup, selectedItem]);
+  }, [groupedData, selectedGroup, selectedItem]);
 
   return (
-    <div className={cn("rounded-md border overflow-y-scroll p-4", className)}>
+    <div
+      ref={containerRef}
+      className={cn("rounded-md border overflow-y-scroll px-4 pt-4", className)}
+    >
       {Object.entries(groupedData).map(([groupKey, items], groupIndex) => {
         const isSelected = groupIndex === selectedGroup;
         return (
