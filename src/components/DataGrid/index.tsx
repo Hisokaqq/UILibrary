@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowUpDown, MoveDown, MoveUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColumnFilter } from "./ColumnFilter";
 import { Pagination } from "./Pagination";
@@ -76,11 +76,21 @@ export const DataGrid = <T extends { id: string | number }>({
   }, [data, sortConfig, filters]);
 
   const handleSort = (key: keyof T) => {
-    setSortConfig((current) => ({
-      key,
-      direction:
-        current.key === key && current.direction === "asc" ? "desc" : "asc",
-    }));
+    setSortConfig((current) => {
+      if (current.key !== key) {
+        return { key, direction: "asc" };
+      }
+
+      if (current.direction === "asc") {
+        return { key, direction: "desc" };
+      }
+
+      if (current.direction === "desc") {
+        return { key: null, direction: "asc" };
+      }
+
+      return { key, direction: "asc" };
+    });
   };
 
   const handleFilter = (key: keyof T, value: string) => {
@@ -117,14 +127,16 @@ export const DataGrid = <T extends { id: string | number }>({
                         className="font-bold hover:text-blue-600 transition duration-300 flex items-center gap-1"
                       >
                         {c.header}
-                        {sortConfig.key === c.accessor && (
+                        {sortConfig.key === c.accessor ? (
                           <span>
                             {sortConfig.direction === "asc" ? (
-                              <ArrowUp size={16} />
+                              <MoveUp size={16} />
                             ) : (
-                              <ArrowDown size={16} />
+                              <MoveDown size={16} />
                             )}
                           </span>
+                        ) : (
+                          <ArrowUpDown size={16} />
                         )}
                       </button>
 
