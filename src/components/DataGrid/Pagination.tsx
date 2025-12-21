@@ -9,7 +9,7 @@ interface PaginationProps {
   setPage: (page: number) => void;
 }
 
-export const Pagination = ({ page, nPages, setPage }: PaginationProps) => {
+const Pagination = ({ page, nPages, setPage }: PaginationProps) => {
   return (
     <div className="flex justify-between items-center mt-auto">
       <div className="text-sm text-gray-500">
@@ -36,3 +36,5 @@ export const Pagination = ({ page, nPages, setPage }: PaginationProps) => {
     </div>
   );
 };
+
+export default Pagination;

@@ -20,7 +20,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setData([...mockData(50)]);
+      setData([...mockData(100)]);
       setLoading(false);
     }, 700);
     return () => clearTimeout(timer);

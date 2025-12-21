@@ -13,7 +13,7 @@ interface ColumnFilterProps {
   setVisibleColumns: (columns: string[]) => void;
 }
 
-export const ColumnFilter = ({
+const ColumnFilter = ({
   allColumns,
   visibleColumns,
   setVisibleColumns,
@@ -53,3 +53,5 @@ export const ColumnFilter = ({
     </DropdownMenu>
   );
 };
+
+export default ColumnFilter;

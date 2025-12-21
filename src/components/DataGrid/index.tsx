@@ -10,8 +10,9 @@ import {
 import { Input } from "../ui/input";
 import { ArrowUpDown, MoveDown, MoveUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ColumnFilter } from "./ColumnFilter";
-import { Pagination } from "./Pagination";
+import Pagination from "./Pagination";
+import ColumnFilter from "./ColumnFilter";
+import { Spinner } from "../ui/spinner";
 
 export interface ColumnDef<T> {
   accessor: keyof T;
@@ -23,14 +24,16 @@ export interface ColumnDef<T> {
 interface DataGridProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  isLoading: boolean;
   className?: string;
 }
 
 const PAGE_SIZE = 15;
 
-export const DataGrid = <T extends { id: string | number }>({
+const DataGrid = <T extends { id: string | number }>({
   data,
   columns,
+  isLoading,
   className,
 }: DataGridProps<T>) => {
   const [sortConfig, setSortConfig] = useState<{
@@ -154,11 +157,19 @@ export const DataGrid = <T extends { id: string | number }>({
           </TableHeader>
 
           <TableBody>
-            {selectedData.length === 0 ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-56">
+                  <div className="flex items-center justify-center w-full h-full">
+                    <Spinner />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : selectedData.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center h-24"
+                  className="h-56 text-center"
                 >
                   No results.
                 </TableCell>
@@ -186,3 +197,5 @@ export const DataGrid = <T extends { id: string | number }>({
     </div>
   );
 };
+
+export default DataGrid;
