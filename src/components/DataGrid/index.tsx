@@ -1,3 +1,39 @@
+/**
+ * DataGrid Component
+ *
+ * A reusable, client-side data grid that supports sorting, filtering, pagination,
+ * and column toggling.
+ *
+ * Requirements:
+ * 1. The generic type T must have an `id` property (string or number).
+ * 2. `columns` definitions must match keys in T or provide a custom `render` function.
+ *
+ * @template T - The type of data displayed in the grid. Must extend { id: string | number }.
+ *
+ * @param {T[]} data - The array of data objects to display.
+ * @param {ColumnDef<T>[]} columns - Configuration for table columns.
+ * @param {keyof T} defaultSort - The default column key to sort by on initial render.
+ * @param {boolean} isLoading - If true, displays a loading spinner instead of data.
+ * @param {number} pageSize - Number of rows per page.
+ * @param {string} [className] - Optional Tailwind classes to merge into the container.
+ *
+ * @example
+ * ```tsx
+ * const columns = [
+ * { accessor: "name", header: "Name" },
+ * { accessor: "role", header: "Role", render: (user) => <b>{user.role}</b> }
+ * ];
+ *
+ * <DataGrid
+ * data={users}
+ * columns={columns}
+ * defaultSort="name"
+ * isLoading={false}
+ * pageSize={10}
+ * />
+ * ```
+ */
+
 import React, { useMemo, useState } from "react";
 import {
   Table,

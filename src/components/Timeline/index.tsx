@@ -1,3 +1,39 @@
+/**
+ * Timeline Component
+ *
+ * A keyboard-accessible, grouped timeline view. It automatically sorts and groups
+ * data based on a specified key.
+ *
+ * Key Features:
+ * - **Keyboard Navigation:** Users can use Arrow Keys to navigate between groups (Left/Right) and items (Up/Down).
+ * - **Screen Reader Support:** Includes live announcements for group and item selection changes.
+ *
+ * @template T - The type of data displayed. Must extend { id: string | number }.
+ *
+ * @param {T[]} data - The array of data objects to display.
+ * @param {string} header - The label prefix for groups (e.g., "Month" or "Status") used in accessibility announcements.
+ * @param {keyof T} groupBy - The property key to group items by (e.g., "date" or "category").
+ * @param {(item: T, isSelected: boolean) => React.ReactNode} render - Function to render a single item. Receives the `isSelected` boolean to style the active item.
+ * @param {string} [className] - Optional Tailwind classes for the container.
+ * @param {(item: T) => string} [ariaLabel] - Optional function to generate a specific string for screen reader announcements when an item is selected.
+ *
+ * @example
+ * ```tsx
+ * <Timeline
+ * data={events}
+ * header="Date"
+ * groupBy="date"
+ * className="h-[500px]"
+ * ariaLabel={(item) => `Event ${item.title} due on ${item.date}`}
+ * render={(item, isSelected) => (
+ * <div className={cn("p-2", isSelected ? "bg-blue-100 ring-2" : "bg-white")}>
+ * <span className="font-bold">{item.title}</span>
+ * </div>
+ * )}
+ * />
+ * ```
+ */
+
 import { cn } from "@/lib/utils";
 import React, { useMemo } from "react";
 import { useTimelineNavigation } from "./hooks/useTimelineNavigation";
