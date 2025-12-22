@@ -35,10 +35,14 @@ export const mockData = (n: number): Data[] => {
       currentDate = newDate;
     }
 
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const year = currentDate.getFullYear();
+
     data.push({
       id: `evn-${i}`,
       title: `${pick(TITLES)}: ${Math.floor(Math.random() * 100)}`,
-      date: currentDate.toISOString().split("T")[0],
+      date: `${year}/${month}/${day}`,
       status: pick(["pending", "in-progress", "completed"] as DataStatus[]),
     });
   }

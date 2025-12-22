@@ -4,9 +4,11 @@ import { Badge } from "@/components/ui/badge";
 
 import type { Data } from "@/lib/mockData";
 import Timeline from "./components/Timeline";
-import { CheckCircle2, CircleDashed, Timer } from "lucide-react";
+import { CheckCircle2, CircleDashed, Pencil, Timer } from "lucide-react";
 import { cn } from "./lib/utils";
 import Nav from "./components/Nav";
+import EventDialog from "./components/EventDialog";
+import { Button } from "./components/ui/button";
 
 function App() {
   const { data, isLoading } = useData();
@@ -14,7 +16,7 @@ function App() {
   const columns: ColumnDef<Data>[] = [
     {
       accessor: "title",
-      header: "Task Name",
+      header: "Event Name",
     },
     {
       accessor: "date",
@@ -43,6 +45,16 @@ function App() {
     {
       accessor: "id",
       header: "ID",
+      render: (row) => (
+        <div className="flex justify-between items-center">
+          {row.id}
+          <EventDialog id={row.id}>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Pencil className="text-primary/50" />
+            </Button>
+          </EventDialog>
+        </div>
+      ),
     },
   ];
 
@@ -56,6 +68,8 @@ function App() {
           columns={columns}
           className="w-3/4"
           isLoading={isLoading}
+          defaultSort="date"
+          pageSize={12}
         />
         <Timeline
           groupBy="date"

@@ -6,24 +6,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
-import EventForm from "./components/EventForm";
+import EventForm from "../EventForm";
 
 interface EventDialogProps {
   id?: string;
+  children: React.ReactNode;
 }
 
-const EventDialog = ({ id }: EventDialogProps) => {
+const EventDialog = ({ id, children }: EventDialogProps) => {
   return (
     <Dialog>
       <form>
-        <DialogTrigger asChild>
-          <Button>
-            <Plus />
-            Add Event
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>

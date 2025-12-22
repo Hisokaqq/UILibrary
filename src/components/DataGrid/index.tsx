@@ -24,23 +24,25 @@ export interface ColumnDef<T> {
 interface DataGridProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  defaultSort: keyof T;
   isLoading: boolean;
+  pageSize: number;
   className?: string;
 }
-
-const PAGE_SIZE = 15;
 
 const DataGrid = <T extends { id: string | number }>({
   data,
   columns,
   isLoading,
   className,
+  defaultSort,
+  pageSize,
 }: DataGridProps<T>) => {
   const [sortConfig, setSortConfig] = useState<{
     key: keyof T | null;
     direction: "asc" | "desc";
   }>({
-    key: null,
+    key: defaultSort,
     direction: "asc",
   });
 
@@ -88,11 +90,7 @@ const DataGrid = <T extends { id: string | number }>({
         return { key, direction: "desc" };
       }
 
-      if (current.direction === "desc") {
-        return { key: null, direction: "asc" };
-      }
-
-      return { key, direction: "asc" };
+      return { key: defaultSort, direction: "asc" };
     });
   };
 
@@ -101,10 +99,10 @@ const DataGrid = <T extends { id: string | number }>({
     setPage(1);
   };
 
-  const nPages = Math.ceil(visibleData.length / PAGE_SIZE);
+  const nPages = Math.ceil(visibleData.length / pageSize);
   const selectedData = visibleData.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE
+    (page - 1) * pageSize,
+    page * pageSize
   );
 
   return (

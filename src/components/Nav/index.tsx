@@ -1,5 +1,7 @@
 import React from "react";
 import EventDialog from "../EventDialog";
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 const Nav = () => {
   return (
@@ -8,7 +10,12 @@ const Nav = () => {
         Dashboard
       </h1>
 
-      <EventDialog />
+      <EventDialog>
+        <Button>
+          <Plus />
+          Add Event
+        </Button>
+      </EventDialog>
     </div>
   );
 };

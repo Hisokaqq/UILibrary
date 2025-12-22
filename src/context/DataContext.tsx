@@ -7,6 +7,8 @@ interface DataContextType {
   data: Data[];
   isLoading: boolean;
   addData: (newData: Omit<Data, "id">) => void;
+  getById: (id: string) => Data | undefined;
+  editData: (id: string, newData: Omit<Data, "id">) => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -37,9 +39,31 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const editData = (id: string, newData: Omit<Data, "id">) => {
+    setData((prev) => {
+      if (!prev) return prev;
+      return prev.map((item) => {
+        if (item.id === id) {
+          return { ...item, ...newData };
+        }
+        return item;
+      });
+    });
+  };
+
+  const getById = (id: string) => {
+    return data?.find((el) => el.id === id);
+  };
+
   return (
     <DataContext.Provider
-      value={{ data: data || [], isLoading: loading, addData }}
+      value={{
+        data: data || [],
+        isLoading: loading,
+        addData,
+        getById,
+        editData,
+      }}
     >
       {children}
     </DataContext.Provider>

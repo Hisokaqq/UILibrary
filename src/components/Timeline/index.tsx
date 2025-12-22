@@ -24,7 +24,6 @@ const Timeline = <T extends { id: string | number }>({
   const groupedData = useMemo(() => {
     return data
       .sort((a, b) => String(a[groupBy]).localeCompare(String(b[groupBy])))
-      .reverse()
       .reduce((acc, item) => {
         const key = String(item[groupBy]);
         if (!acc[key]) {
