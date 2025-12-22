@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { ButtonGroup } from "../ui/button-group";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
   page: number;

@@ -1,7 +1,7 @@
 import React from "react";
-import { Kbd } from "../ui/kbd";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Kbd } from "@/components/ui/kbd";
 
 const Hint = ({ showHint }: { showHint: boolean }) => {
   return (

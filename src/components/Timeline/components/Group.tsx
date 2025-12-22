@@ -1,6 +1,6 @@
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { Badge } from "../ui/badge";
 
 interface GroupProps {
   groupKey: string;

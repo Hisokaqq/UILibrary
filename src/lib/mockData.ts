@@ -5,7 +5,9 @@ export interface Data {
   status: DataStatus;
 }
 
-export type DataStatus = "pending" | "in-progress" | "completed";
+export const STATUSES = ["pending", "in-progress", "completed"] as const;
+
+export type DataStatus = (typeof STATUSES)[number];
 
 const TITLES = [
   "Project Kickoff",

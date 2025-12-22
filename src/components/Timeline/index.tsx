@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import React, { useMemo } from "react";
 import { useTimelineNavigation } from "./hooks/useTimelineNavigation";
-import Hint from "./Hint";
-import Group from "./Group";
+import Hint from "./components/Hint";
+import Group from "./components/Group";
 
 interface TimelineProps<T> {
   data: T[];
@@ -22,14 +22,17 @@ const Timeline = <T extends { id: string | number }>({
   ariaLabel,
 }: TimelineProps<T>) => {
   const groupedData = useMemo(() => {
-    return data.sort().reduce((acc, item) => {
-      const key = String(item[groupBy]);
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(item);
-      return acc;
-    }, {} as Record<string, T[]>);
+    return data
+      .sort((a, b) => String(a[groupBy]).localeCompare(String(b[groupBy])))
+      .reverse()
+      .reduce((acc, item) => {
+        const key = String(item[groupBy]);
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(item);
+        return acc;
+      }, {} as Record<string, T[]>);
   }, [data, groupBy]);
 
   const { selectedGroup, selectedItem, containerRef, itemsRef, showHint } =

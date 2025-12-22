@@ -1,6 +1,5 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
+import EventDialog from "../EventDialog";
 
 const Nav = () => {
   return (
@@ -8,10 +7,8 @@ const Nav = () => {
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">
         Dashboard
       </h1>
-      <Button>
-        <Plus />
-        Add Event
-      </Button>
+
+      <EventDialog />
     </div>
   );
 };

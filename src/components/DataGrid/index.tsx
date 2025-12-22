@@ -10,9 +10,9 @@ import {
 import { Input } from "../ui/input";
 import { ArrowUpDown, MoveDown, MoveUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Pagination from "./Pagination";
-import ColumnFilter from "./ColumnFilter";
+import ColumnFilter from "./components/ColumnFilter";
 import { Spinner } from "../ui/spinner";
+import Pagination from "./components/Pagination";
 
 export interface ColumnDef<T> {
   accessor: keyof T;
