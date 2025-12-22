@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import type z from "zod";
 import { useData } from "@/context/DataContext";
 import CustomCalendar from "./components/CustomCalendar";
 import CustomSelect from "./components/CustomSelect";
+import { toast } from "sonner";
 
 export type EventFormValues = z.infer<typeof eventSchema>;
 
@@ -27,6 +28,8 @@ const EventForm = ({ id }: EventFormProps) => {
   const { addData, getById, editData } = useData();
 
   const event = getById(id || "");
+
+  const exitRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
@@ -46,14 +49,19 @@ const EventForm = ({ id }: EventFormProps) => {
 
   const onSubmitCreate = (values: z.infer<typeof eventSchema>) => {
     addData(values);
+    exitRef.current?.click();
+    toast("Event has been created");
   };
   const onSubmitEdit = (values: z.infer<typeof eventSchema>) => {
     if (!id) return;
     editData(id, values);
+    exitRef.current?.click();
+    toast("Event has been updated");
   };
 
   return (
     <Form {...form}>
+      {/* eslint-disable react-hooks/refs */}
       <form onSubmit={form.handleSubmit(id ? onSubmitEdit : onSubmitCreate)}>
         <FieldGroup>
           <Controller
@@ -79,7 +87,7 @@ const EventForm = ({ id }: EventFormProps) => {
           <CustomCalendar form={form} />
         </FieldGroup>
         <DialogFooter className="mt-6">
-          <DialogClose asChild>
+          <DialogClose asChild ref={exitRef}>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button type="submit">{id ? "Save changes" : "Create"}</Button>
