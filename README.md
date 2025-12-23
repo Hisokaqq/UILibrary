@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# React Component Library Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A technical task submission showcasing three reusable components (**DataGrid**, **Timeline**, **EventForm**) integrated into a dashboard application.
 
-Currently, two official plugins are available:
+## 🏗 Architecture & Design Decisions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. DataGrid
 
-## React Compiler
+- **Philosophy:** Inspired by the **TanStack Table** headless architecture. I built the logic (sorting, filtering, pagination) from scratch but kept the UI separate using **Shadcn UI** (styled HTML tables).
+- **Reusability:** Designed to be completely generic. It works with any dataset without refactoring—the consumer simply defines the columns and the component handles the rest.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### 2. Timeline
 
-## Expanding the ESLint configuration
+- **Flexibility:** I focused on "Inversion of Control." The component handles the complex logic (grouping by date, keyboard navigation, accessibility), while the visual presentation is fully delegated to the parent via a `render` prop.
+- **Result:** A developer can drastically change the look of the timeline items without touching the core logic.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. Event Form
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Trade-off:** I initially considered building a fully generic form generator that iterates through a **Zod** schema to create inputs automatically. However, I decided that was "over-engineering" for this scope.
+- **Decision:** I built a specialized form for Events to ensure better UX and maintainability, avoiding the complexity of a robust generic form builder.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ⚠️ Challenges & Learnings
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**1. Date Formatting**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Challenge:** Syncing dates between the JavaScript `Date` object, the Calendar picker, and the Table display was tricky (issues with timezones shifting dates by -1 day).
+- **Solution:** Standardized inputs/outputs to simple string formats to ensure consistency.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**2. Sorting Logic**
+
+- **Challenge:** Designing a robust sort behavior that feels intuitive when a user "clears" a sort.
+- **Solution:** I implemented a "Tri-State" cycle (Ascending → Descending → Off). Crucially, when a specific column's sort is cleared, the grid automatically falls back to the provided `defaultSort` prop (Date) rather than showing a random order.
+- **Optimization:** By formatting dates as `YYYY/MM/DD` strings, I utilized standard string comparison for sorting. This avoided the performance overhead of parsing `Date` objects for every row while ensuring correct chronological order.
+
+**3. Modal State Management**
+
+- **Challenge:** Closing the Dialog programmatically after a successful submission proved difficult when managing state via Context.
+- **Workaround:** I implemented a `useRef` solution on the hidden "Cancel" button to trigger the close action upon success. While I recognize this is a "hack" compared to a pure state-driven approach, it effectively solved the user flow problem for this iteration.
+
+---
+
+## 🛠 Tech Stack
+
+- **React(Vite) / TypeScript**
+- **Shadcn UI** (Radix Primitives)
+- **Tailwind CSS**
+- **React Hook Form + Zod**
+- **Context API** (State Management)

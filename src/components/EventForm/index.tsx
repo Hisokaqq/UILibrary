@@ -1,3 +1,22 @@
+/**
+ * EventForm Component
+ *
+ * A specialized form handling both the creation and editing of events.
+ *
+ * Features:
+ * - **Dual Mode:** Detects "Edit Mode" if an `id` is provided; otherwise defaults to "Create Mode".
+ * - **Validation:** Powered by Zod schema (Title required, Date required).
+ * - **Feedback:** Triggers a toast notification upon success.
+ *
+ * Implementation Note:
+ * This component uses a `useRef` attached to the invisible `DialogClose` button to programmatically
+ * close the parent modal after a successful submission. While controlling state via Context is
+ * often preferred, this approach was chosen as a robust, isolated solution to ensure the dialog
+ * closes reliably without complex parent-child state synchronization.
+ *
+ * @param {string} [id] - The ID of the event to edit. If omitted, a new event is created.
+ */
+
 import React, { useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
