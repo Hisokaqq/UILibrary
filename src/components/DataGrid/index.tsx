@@ -136,10 +136,9 @@ const DataGrid = <T extends { id: string | number }>({
   };
 
   const nPages = Math.ceil(visibleData.length / pageSize);
-  const selectedData = visibleData.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
+  const selectedData = useMemo(() => {
+    return visibleData.slice((page - 1) * pageSize, page * pageSize);
+  }, [visibleData, page, pageSize]);
 
   return (
     <div className={cn("space-y-4 flex flex-col", className)}>
@@ -227,7 +226,9 @@ const DataGrid = <T extends { id: string | number }>({
         </Table>
       </div>
 
-      <Pagination page={page} nPages={nPages} setPage={setPage} />
+      {!isLoading && (
+        <Pagination page={page} nPages={nPages} setPage={setPage} />
+      )}
     </div>
   );
 };

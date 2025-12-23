@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 const Nav = () => {
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+      <h1 className="text-3xl font-bold tracking-tight text-primary/70">
         Dashboard
       </h1>
 

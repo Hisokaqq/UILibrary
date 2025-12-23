@@ -59,23 +59,24 @@ function App() {
   ];
 
   return (
-    <div className="bg-background/40 h-screen p-8 space-y-8">
+    <div className="bg-background/40 min-h-screen p-4 md:p-8 space-y-8">
       <Nav />
 
-      <div className="bg-background p-6 rounded-xl border shadow-sm flex min-h-205 gap-4">
+      <div className="bg-background p-4 md:p-6 rounded-xl border shadow-sm flex flex-col xl:flex-row h-auto xl:h-180 gap-4">
         <DataGrid
           data={data}
           columns={columns}
-          className="w-3/4"
+          className="w-full xl:w-1/2 2xl:w-3/4 h-full"
           isLoading={isLoading}
           defaultSort="date"
-          pageSize={12}
+          pageSize={10}
         />
         <Timeline
           groupBy="date"
           header="Date"
           data={data}
-          className="w-1/4 max-h-200"
+          isLoading={isLoading}
+          className="w-full h-96 xl:w-1/2 2xl:w-1/4 xl:h-auto xl:max-h-180"
           ariaLabel={(item) => {
             return `${item.title}, status is ${item.status}`;
           }}

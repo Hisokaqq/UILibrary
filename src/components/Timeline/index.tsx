@@ -16,6 +16,7 @@
  * @param {(item: T, isSelected: boolean) => React.ReactNode} render - Function to render a single item. Receives the `isSelected` boolean to style the active item.
  * @param {string} [className] - Optional Tailwind classes for the container.
  * @param {(item: T) => string} [ariaLabel] - Optional function to generate a specific string for screen reader announcements when an item is selected.
+ * @param {boolean} isLoading - If true, displays a loading spinner instead of data.
  *
  * @example
  * ```tsx
@@ -39,6 +40,7 @@ import React, { useMemo } from "react";
 import { useTimelineNavigation } from "./hooks/useTimelineNavigation";
 import Hint from "./components/Hint";
 import Group from "./components/Group";
+import { Spinner } from "../ui/spinner";
 
 interface TimelineProps<T> {
   data: T[];
@@ -47,6 +49,7 @@ interface TimelineProps<T> {
   render: (item: T, isSelected: boolean) => React.ReactNode;
   className?: string;
   ariaLabel?: (item: T) => string;
+  isLoading: boolean;
 }
 
 const Timeline = <T extends { id: string | number }>({
@@ -56,6 +59,7 @@ const Timeline = <T extends { id: string | number }>({
   render,
   className,
   ariaLabel,
+  isLoading,
 }: TimelineProps<T>) => {
   const groupedData = useMemo(() => {
     return data
@@ -96,7 +100,11 @@ const Timeline = <T extends { id: string | number }>({
         className
       )}
     >
-      <Hint showHint={showHint} />
+      {isLoading ? (
+        <Spinner className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      ) : (
+        <Hint showHint={showHint} />
+      )}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         {announcement}
       </div>
